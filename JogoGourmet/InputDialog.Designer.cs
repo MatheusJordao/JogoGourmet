@@ -39,9 +39,8 @@
             labelDialog.AutoSize = true;
             labelDialog.Location = new Point(87, 19);
             labelDialog.Name = "labelDialog";
-            labelDialog.Size = new Size(138, 15);
+            labelDialog.Size = new Size(0, 15);
             labelDialog.TabIndex = 0;
-            labelDialog.Text = "Qual prato você pensou?";
             // 
             // buttonOk
             // 

@@ -1,16 +1,22 @@
+using JogoGourmet.Model;
+using JogoGourmet.Service;
+
 namespace JogoGourmet
 {
     public partial class Main : Form
     {
-        public List<Palpite> _palpites;
+        public PalpiteService _palpiteService;
+        public VitoriaService _vitoriaService;
         public Main()
         {
-            _palpites =
-            [
-                new Palpite("Massa"),
-                new Palpite("Bolo de chocolate"),
-                new Palpite("Lasanha", "Massa")
-            ];
+            List<Palpite> dadosIniciais = [
+                    new Palpite("Massa"),
+                    new Palpite("Bolo de chocolate"),
+                    new Palpite("Lasanha", "Massa")
+                ];
+
+            _palpiteService = new PalpiteService(dadosIniciais);
+            _vitoriaService = new VitoriaService(0);
 
             InitializeComponent();
         }
@@ -22,8 +28,8 @@ namespace JogoGourmet
 
         private void IniciarJogo()
         {
-            var listaPalpitesBase = _palpites.Where(o => string.IsNullOrEmpty(o.PalpitePai)).ToList();
-            
+            var listaPalpitesBase = _palpiteService.ListarPalpitesBase();
+
             foreach (var palpiteBase in listaPalpitesBase)
             {
                 bool acertou = Dialog.Perguntar(palpiteBase.Descricao);
@@ -34,18 +40,12 @@ namespace JogoGourmet
                 }
             }
 
-            string novoPrato = Dialog.CapturarPrato();
-            string pratoPai = Dialog.CapturarPratoPai(novoPrato, listaPalpitesBase.Last().Descricao);
-
-            if (!string.IsNullOrEmpty(novoPrato) && !string.IsNullOrEmpty(pratoPai))
-            {
-                _palpites.Add(new Palpite(novoPrato, pratoPai));
-            }
+            _palpiteService.Adicionar(listaPalpitesBase.Last().Descricao, null);
         }
 
         private void Adivinhar(Palpite palpite)
         {
-            var palpitesFilhos = _palpites.Where(o => !string.IsNullOrEmpty(o.PalpitePai) && o.PalpitePai.Equals(palpite.Descricao)).ToList();
+            var palpitesFilhos = _palpiteService.ListarPalpitesPorPai(palpite.Descricao);
 
             if (palpitesFilhos.Count != 0)
             {
@@ -59,18 +59,11 @@ namespace JogoGourmet
                     }
                 }
 
-                string novoPrato = Dialog.CapturarPrato();
-                string pratoPai = Dialog.CapturarPratoPai(novoPrato, palpitesFilhos.Last().Descricao);
-
-                if (!string.IsNullOrEmpty(novoPrato) && !string.IsNullOrEmpty(pratoPai))
-                {
-                    _palpites.Add(new Palpite(pratoPai, palpite.Descricao));
-                    _palpites.Add(new Palpite(novoPrato, pratoPai));
-                }
+                _palpiteService.Adicionar(palpitesFilhos.Last().Descricao, palpite.Descricao);
             }
             else
             {
-                DialogResult result = MessageBox.Show("Acertei de novo!", "Confirmação", MessageBoxButtons.OK);
+                _vitoriaService.MensagemVitoria();
                 return;
             }
         }
