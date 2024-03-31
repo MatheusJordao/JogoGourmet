@@ -11,7 +11,7 @@
         public static string CapturarPrato()
         {
             string userInput = string.Empty;
-            var dialog = new InputDialog("Qual prato você pensou?");
+            var dialog = new InputDialog("Desisto", "Qual prato você pensou?");
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -24,7 +24,7 @@
         public static string CapturarPratoPai(string novoPrato, string primeiroFilho)
         {
             string userInput = string.Empty;
-            var dialog = new InputDialog($"{novoPrato} é __________, mas {primeiroFilho} não.");
+            var dialog = new InputDialog("Complete", $"{novoPrato} é __________, mas {primeiroFilho} não.");
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {

@@ -13,9 +13,10 @@ namespace JogoGourmet
     public partial class InputDialog : Form
     {
         public string UserInput { get; private set; }
-        public InputDialog(string label)
+        public InputDialog(string titulo, string label)
         {
             InitializeComponent();
+            this.Text = titulo;
             labelDialog.Text = label;
         }
 
