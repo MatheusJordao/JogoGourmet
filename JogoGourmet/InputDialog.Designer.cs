@@ -36,15 +36,15 @@
             // 
             // labelDialog
             // 
-            labelDialog.AutoSize = true;
-            labelDialog.Location = new Point(87, 19);
+            labelDialog.Location = new Point(-1, 17);
             labelDialog.Name = "labelDialog";
-            labelDialog.Size = new Size(0, 15);
+            labelDialog.Size = new Size(361, 15);
             labelDialog.TabIndex = 0;
+            labelDialog.TextAlign = ContentAlignment.TopCenter;
             // 
             // buttonOk
             // 
-            buttonOk.Location = new Point(72, 85);
+            buttonOk.Location = new Point(92, 88);
             buttonOk.Name = "buttonOk";
             buttonOk.Size = new Size(75, 23);
             buttonOk.TabIndex = 1;
@@ -54,7 +54,7 @@
             // 
             // buttonCancelar
             // 
-            buttonCancelar.Location = new Point(174, 85);
+            buttonCancelar.Location = new Point(194, 88);
             buttonCancelar.Name = "buttonCancelar";
             buttonCancelar.Size = new Size(75, 23);
             buttonCancelar.TabIndex = 2;
@@ -64,10 +64,12 @@
             // 
             // textBoxDialog
             // 
-            textBoxDialog.Location = new Point(125, 47);
+            textBoxDialog.Anchor = AnchorStyles.None;
+            textBoxDialog.Location = new Point(92, 45);
             textBoxDialog.Name = "textBoxDialog";
-            textBoxDialog.Size = new Size(100, 23);
+            textBoxDialog.Size = new Size(177, 23);
             textBoxDialog.TabIndex = 3;
+            textBoxDialog.TextAlign = HorizontalAlignment.Center;
             // 
             // InputDialog
             // 
@@ -79,6 +81,7 @@
             Controls.Add(buttonOk);
             Controls.Add(labelDialog);
             Name = "InputDialog";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "InputDialog";
             ResumeLayout(false);
             PerformLayout();

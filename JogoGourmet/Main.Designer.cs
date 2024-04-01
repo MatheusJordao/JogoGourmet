@@ -33,6 +33,16 @@
             buttonIniciarJogo = new Button();
             SuspendLayout();
             // 
+            // buttonIniciarJogo
+            // 
+            buttonIniciarJogo.Location = new Point(187, 93);
+            buttonIniciarJogo.Name = "buttonIniciarJogo";
+            buttonIniciarJogo.Size = new Size(75, 23);
+            buttonIniciarJogo.TabIndex = 1;
+            buttonIniciarJogo.Text = "OK";
+            buttonIniciarJogo.UseVisualStyleBackColor = true;
+            buttonIniciarJogo.Click += buttonIniciarJogo_Click;
+            // 
             // labelMain
             // 
             labelMain.Anchor = AnchorStyles.Top;
@@ -44,24 +54,15 @@
             labelMain.TabIndex = 0;
             labelMain.Text = "Pense em um prato que você gosta";
             // 
-            // buttonIniciarJogo
-            // 
-            buttonIniciarJogo.Location = new Point(187, 93);
-            buttonIniciarJogo.Name = "buttonIniciarJogo";
-            buttonIniciarJogo.Size = new Size(75, 23);
-            buttonIniciarJogo.TabIndex = 1;
-            buttonIniciarJogo.Text = "OK";
-            buttonIniciarJogo.UseVisualStyleBackColor = true;
-            buttonIniciarJogo.Click += buttonIniciarJogo_Click;
-            // 
-            // Form1
+            // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(459, 154);
             Controls.Add(buttonIniciarJogo);
             Controls.Add(labelMain);
-            Name = "Form1";
+            Name = "Main";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Jogo Gourmet";
             ResumeLayout(false);
             PerformLayout();
