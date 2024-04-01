@@ -6,23 +6,25 @@ namespace JogoGourmet.Service
     {
         private List<Palpite> _palpites = palpites;
 
-        public List<Palpite> ListarPalpitesBase()
+        public List<Palpite> ListarCaracteristicas()
         {
-            return _palpites.Where(o => string.IsNullOrEmpty(o.PalpitePai)).ToList();
+            return _palpites.Where(o => string.IsNullOrEmpty(o.Caracteristica)).ToList();
         }
-        public List<Palpite> ListarPalpitesPorPai(string palpitePai)
+        public List<Palpite> ListarPalpitesPorCaracteristica(string caracteristica)
         {
-            return _palpites.Where(o => !string.IsNullOrEmpty(o.PalpitePai) && o.PalpitePai.Equals(palpitePai)).ToList();
+            return _palpites.Where(o => !string.IsNullOrEmpty(o.Caracteristica) && o.Caracteristica.Equals(caracteristica)).ToList();
         }
-        public void Adicionar(string palpiteComparativo, string? pratoAvo)
+        public void Adicionar(string palpiteComparativo, string? categoria)
         {
             string novoPrato = Dialog.CapturarPrato();
             string pratoPai = Dialog.CapturarPratoPai(novoPrato, palpiteComparativo);
 
             if (!string.IsNullOrEmpty(novoPrato) && !string.IsNullOrEmpty(pratoPai))
             {
-                _palpites.Add(new Palpite(pratoPai, pratoAvo));
-                _palpites.Add(new Palpite(novoPrato, pratoPai));
+                var ultimoIndex = _palpites.Count() - 1;
+
+                _palpites.Insert(ultimoIndex - 1, new Palpite(pratoPai, categoria));
+                _palpites.Insert(ultimoIndex - 1, new Palpite(novoPrato, pratoPai));
             }
         }
     }

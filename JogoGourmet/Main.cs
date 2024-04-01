@@ -28,38 +28,38 @@ namespace JogoGourmet
 
         private void IniciarJogo()
         {
-            var listaPalpitesBase = _palpiteService.ListarPalpitesBase();
+            var listaCaracteristicas = _palpiteService.ListarCaracteristicas();
 
-            foreach (var palpiteBase in listaPalpitesBase)
+            foreach (var caracteristica in listaCaracteristicas)
             {
-                bool acertou = Dialog.Perguntar(palpiteBase.Descricao);
+                bool acertou = Dialog.Perguntar(caracteristica.Descricao);
                 if (acertou)
                 {
-                    Adivinhar(palpiteBase);
+                    Adivinhar(caracteristica);
                     return;
                 }
             }
 
-            _palpiteService.Adicionar(listaPalpitesBase.Last().Descricao, null);
+            _palpiteService.Adicionar(listaCaracteristicas.Last().Descricao, null);
         }
 
-        private void Adivinhar(Palpite palpite)
+        private void Adivinhar(Palpite caracteristica)
         {
-            var palpitesFilhos = _palpiteService.ListarPalpitesPorPai(palpite.Descricao);
+            var palpitesPorCaracteristica = _palpiteService.ListarPalpitesPorCaracteristica(caracteristica.Descricao);
 
-            if (palpitesFilhos.Count != 0)
+            if (palpitesPorCaracteristica.Count != 0)
             {
-                foreach (var palpiteFilho in palpitesFilhos)
+                foreach (var palpite in palpitesPorCaracteristica)
                 {
-                    bool acertou = Dialog.Perguntar(palpiteFilho.Descricao);
+                    bool acertou = Dialog.Perguntar(palpite.Descricao);
                     if (acertou)
                     {
-                        Adivinhar(palpiteFilho);
+                        Adivinhar(palpite);
                         return;
                     }
                 }
 
-                _palpiteService.Adicionar(palpitesFilhos.Last().Descricao, palpite.Descricao);
+                _palpiteService.Adicionar(palpitesPorCaracteristica.Last().Descricao, caracteristica.Descricao);
             }
             else
             {
