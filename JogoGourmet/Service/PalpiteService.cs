@@ -6,26 +6,45 @@ namespace JogoGourmet.Service
     {
         private List<Palpite> _palpites = palpites;
 
-        public List<Palpite> ListarCaracteristicas()
+        public List<Palpite> ListarRaiz()
         {
-            return _palpites.Where(o => string.IsNullOrEmpty(o.Caracteristica)).ToList();
+            return _palpites.Where(o => o.Pai == null).ToList();
         }
-        public List<Palpite> ListarPalpitesPorCaracteristica(string caracteristica)
+        public static List<Palpite> ListarPalpitesPorPai(Palpite palpite)
         {
-            return _palpites.Where(o => !string.IsNullOrEmpty(o.Caracteristica) && o.Caracteristica.Equals(caracteristica)).ToList();
+            return [.. palpite.Filhos];
         }
-        public void Adicionar(string palpiteComparativo, string? categoria)
+        public void Adicionar(string palpiteComparativo, Palpite? palpitePai)
         {
-            string novoPrato = Dialog.CapturarPrato();
-            string pratoPai = Dialog.CapturarPratoPai(novoPrato, palpiteComparativo);
+            string descricaoNovoPrato = Dialog.CapturarPrato();
+            string descricaoPratoPai = Dialog.CapturarPratoPai(descricaoNovoPrato, palpiteComparativo);
 
-            if (!string.IsNullOrEmpty(novoPrato) && !string.IsNullOrEmpty(pratoPai))
+            if (!string.IsNullOrEmpty(descricaoNovoPrato) && !string.IsNullOrEmpty(descricaoPratoPai))
             {
-                var ultimoIndex = _palpites.Count() - 1;
+                var novoElemento = new Palpite(descricaoPratoPai, palpitePai);
+                AdicionarPenultimaPosicao(novoElemento.Filhos, new Palpite(descricaoNovoPrato, novoElemento));
 
-                _palpites.Insert(ultimoIndex - 1, new Palpite(pratoPai, categoria));
-                _palpites.Insert(ultimoIndex - 1, new Palpite(novoPrato, pratoPai));
+                if (palpitePai != null)
+                {
+                    //Add no meio da árvore
+                    AdicionarPenultimaPosicao(palpitePai.Filhos, novoElemento);
+                }
+                else
+                {
+                    //Add direto na raiz
+                    AdicionarPenultimaPosicao(_palpites, novoElemento);
+                }   
             }
+        }
+
+        private static void AdicionarPenultimaPosicao(List<Palpite> palpites, Palpite novoPalpite)
+        {
+            int posicaoInsert = 0;
+
+            if (palpites.Count >= 1)
+                posicaoInsert = palpites.Count - 1;
+
+            palpites.Insert(posicaoInsert, novoPalpite);
         }
     }
 }

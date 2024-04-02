@@ -9,10 +9,12 @@ namespace JogoGourmet
         public VitoriaService _vitoriaService;
         public Main()
         {
+            var massa = new Palpite("Massa");
+            massa.Filhos.Add(new Palpite("Lasanha", massa));
+
             List<Palpite> dadosIniciais = [
-                    new Palpite("Massa"),
-                    new Palpite("Bolo de chocolate"),
-                    new Palpite("Lasanha", "Massa")
+                    massa,
+                    new Palpite("Bolo de chocolate")
                 ];
 
             _palpiteService = new PalpiteService(dadosIniciais);
@@ -28,28 +30,28 @@ namespace JogoGourmet
 
         private void IniciarJogo()
         {
-            var listaCaracteristicas = _palpiteService.ListarCaracteristicas();
+            var listaRaiz = _palpiteService.ListarRaiz();
 
-            foreach (var caracteristica in listaCaracteristicas)
+            foreach (var raiz in listaRaiz)
             {
-                bool acertou = Dialog.Perguntar(caracteristica.Descricao);
+                bool acertou = Dialog.Perguntar(raiz.Descricao);
                 if (acertou)
                 {
-                    Adivinhar(caracteristica);
+                    Adivinhar(raiz);
                     return;
                 }
             }
 
-            _palpiteService.Adicionar(listaCaracteristicas.Last().Descricao, null);
+            _palpiteService.Adicionar(listaRaiz.Last().Descricao, null);
         }
 
-        private void Adivinhar(Palpite caracteristica)
+        private void Adivinhar(Palpite raiz)
         {
-            var palpitesPorCaracteristica = _palpiteService.ListarPalpitesPorCaracteristica(caracteristica.Descricao);
+            var palpites = PalpiteService.ListarPalpitesPorPai(raiz);
 
-            if (palpitesPorCaracteristica.Count != 0)
+            if (palpites.Count != 0)
             {
-                foreach (var palpite in palpitesPorCaracteristica)
+                foreach (var palpite in palpites)
                 {
                     bool acertou = Dialog.Perguntar(palpite.Descricao);
                     if (acertou)
@@ -59,7 +61,7 @@ namespace JogoGourmet
                     }
                 }
 
-                _palpiteService.Adicionar(palpitesPorCaracteristica.Last().Descricao, caracteristica.Descricao);
+                _palpiteService.Adicionar(palpites.Last().Descricao, raiz);
             }
             else
             {

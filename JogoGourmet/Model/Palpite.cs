@@ -1,8 +1,9 @@
 ﻿namespace JogoGourmet.Model
 {
-    public class Palpite(string descricao, string? caracteristica = null)
+    public class Palpite(string descricao, Palpite? pai = null)
     {
         public string Descricao = descricao;
-        public string? Caracteristica = caracteristica;
+        public Palpite? Pai = pai;
+        public List<Palpite> Filhos { get; set; } = [];
     }
 }
